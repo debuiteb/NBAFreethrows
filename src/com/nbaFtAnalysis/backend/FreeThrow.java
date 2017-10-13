@@ -16,9 +16,8 @@ public class FreeThrow {
 		player = freeThrow[5].toLowerCase();
 		playoffs = freeThrow[6].toLowerCase().equals("regular")? false : true;
 		score = freeThrow[7];
-
-		String se = freeThrow[8].substring(freeThrow[8].length()-4, freeThrow[8].length());
 		
+		// this handles some weird bad data from the 2013 season
 		if(!freeThrow[2].equals("400278346.0"))
 			season = Integer.parseInt(freeThrow[8].substring(freeThrow[8].length()-4, freeThrow[8].length()));
 		else

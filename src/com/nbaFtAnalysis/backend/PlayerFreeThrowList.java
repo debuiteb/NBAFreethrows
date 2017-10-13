@@ -5,10 +5,6 @@ import java.util.Set;
 
 public class PlayerFreeThrowList {
 
-	//maybe an hash table/dictionary with the location being an arraylist of every free throw they've taken
-	// then a separate class with a dictionary but with the clutch ratings and such asthe values/instance variables
-	// so when a user seraches it just quesries this final class and accesses the member variable
-
 	private HashMap <Player,ArrayList<FreeThrow>> playerList;
 	private Player currentPlayer;
 
@@ -18,7 +14,7 @@ public class PlayerFreeThrowList {
 
 		for(FreeThrow currentFT : ftArray){
 			String name = currentFT.getPlayerName();
-			Player tempPlayer;// = new Player(name);
+			Player tempPlayer;
 			if(playerAlreadyInitialised(name)){
 				ArrayList<FreeThrow> tempList = playerList.get(currentPlayer);
 				tempList.add(currentFT);
@@ -49,11 +45,8 @@ public class PlayerFreeThrowList {
 		ArrayList<FreeThrow> ftList = new ArrayList<FreeThrow>();
 		for(Player tempPlayer : playerList.keySet()){
 			if(tempPlayer.getName().equals(name)){
-				System.out.println("We have a match");
-				for(FreeThrow f : playerList.get(tempPlayer)){
-					//f.printAllDetailsLineSpace();
+				for(FreeThrow f : playerList.get(tempPlayer))
 					ftList.add(f);
-				}
 			}
 		}
 		return ftList;
@@ -61,24 +54,18 @@ public class PlayerFreeThrowList {
 
 	public boolean playerExists(String name){
 		for(Player tempPlayer : playerList.keySet()){
-			if(tempPlayer.getName().equals(name.toLowerCase())){
-				System.out.println(tempPlayer.getName());
+			if(tempPlayer.getName().equals(name.toLowerCase()))
 				return true;
-			}
 		}
-		System.out.println("not found");
 		return false;
 
 	}
 	
 	public Player getPlayer(String name){
 		for(Player tempPlayer : playerList.keySet()){
-			if(tempPlayer.getName().equals(name.toLowerCase())){
-				System.out.println(tempPlayer.getName());
+			if(tempPlayer.getName().equals(name.toLowerCase()))
 				return tempPlayer;
-			}
 		}
-		System.out.println("here null");
 		return null;
 
 	}	
