@@ -19,9 +19,8 @@ public class NBA_Data {
 	}
 
 	private void printFreeThrows(){
-		for(FreeThrow ft : freeThrows){
+		for(FreeThrow ft : freeThrows)
 			ft.printAllDetailsLineSpace();
-		}
 		System.out.println();
 	}
 

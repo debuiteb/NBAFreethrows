@@ -57,15 +57,17 @@ public class FreeThrow {
 	}
 	
 	public void printAllDetailsLineSpace(){
-		System.out.println("end_result: " + end_result);
-		System.out.println("game: " + game);
-		System.out.println("period: " + period);
-		System.out.println("player: " + player);
-		System.out.println("playoffs: " + playoffs);
-		System.out.println("score: " + score);
-		System.out.println("season: " + season);
-		System.out.println("shot made: " + shot_made);
-		System.out.println("time: " + time);
+		
+		StringBuilder stringbuilder = new StringBuilder();
+		String end = "\n";
+		stringbuilder.append("end_result: ").append(end_result).append(end).append("game: ").append(game)
+		.append(end).append("period: ").append(period).append(end).append("player: ").append(player)
+		.append(end).append("playoffs: ").append(playoffs).append(end).append("score: ").append(score)
+		.append(end).append("season: ").append(season).append(end).append("shot made: ").append(shot_made)
+		.append(end).append("time: ").append(time);
+		
+		System.out.println(stringbuilder.toString());
+		
 		System.out.println();
 	}
 }
