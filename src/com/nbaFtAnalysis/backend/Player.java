@@ -1,7 +1,6 @@
 package com.nbaFtAnalysis.backend;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,7 +10,9 @@ public class Player {
 	private int numberOfFreeThrowsTaken;
 	private double overallAverage;
 	private Map<Object,Object>  seasonAverage;
-	private ArrayList<FreeThrow> freeThrowsTaken;
+	private ArrayList<FreeThrow> freeThrowsTaken; //this is an arraylist of every single freethrow taken by the instance of the player
+	private double playoffAverage;
+	private double regSeasonAverage;
 
 	public Player(String name, FreeThrow freeThrow){
 		this.name = name.toLowerCase();
@@ -19,13 +20,15 @@ public class Player {
 		seasonAverage = new HashMap<Object,Object>();
 		freeThrowsTaken = new ArrayList<FreeThrow>();
 		freeThrowsTaken.add(freeThrow);
+		regSeasonAverage = -1.0;
+		playoffAverage = -1.0;
 	}
-	
+
 	public void addFT(FreeThrow ft){
 		freeThrowsTaken.add(ft);
 		numberOfFreeThrowsTaken++;
 	}
-	
+
 	public Player(String name){
 		this.name = name.toLowerCase();
 	}
@@ -33,16 +36,52 @@ public class Player {
 	public String getName(){
 		return name;
 	}
+	
+	public double getPlayoffAverage(){
+		if(playoffAverage == -1.0)
+			return calculatePlayoffAverage();
+		return playoffAverage;
+	}
+	public double getRegSeasonAverage(){
+		if(regSeasonAverage == -1.0)
+			return calcualteRegularSeasonAverage();
+		return regSeasonAverage;
+	}
+	public double getPlayoffDifferential(){
+		return getPlayoffAverage() - getRegSeasonAverage();
+	}
 
 	public double calcualteRegularSeasonAverage(){
-		//TODO
-		return 0;
+		int made=0;
+		int total=0;
+		for(FreeThrow ft : freeThrowsTaken){
+			if(!ft.getPlayoffs()){
+				total++;
+				if(ft.getShotMade())
+					made++;
+			}
+		}
+		if(total==0)
+			return -1.0;
+		
+		return regSeasonAverage = (double) made/total;
 	}
 	public double calculatePlayoffAverage(){
-		// TODO
-		return 0;
+		int made=0;
+		int total=0;
+		for(FreeThrow ft : freeThrowsTaken){
+			if(ft.getPlayoffs()){
+				total++;
+				if(ft.getShotMade())
+					made++;
+			}
+		}
+		if(total==0)
+			return -1.0;
+		
+		return playoffAverage = (double) made/total;
 	}
-	
+
 	public double calculateOverallAverageFromSinglePlayer(){
 		// input of freeThrows is every single freeThrow in the dataset
 
@@ -51,10 +90,10 @@ public class Player {
 		int total = 0;
 
 		for(FreeThrow ft : freeThrowsTaken){
-				shot_made = ft.getShotMade();
-				total++;
-				if(shot_made)
-					made++;
+			shot_made = ft.getShotMade();
+			total++;
+			if(shot_made)
+				made++;
 		}
 		System.out.println("made: " + made);
 		System.out.println("total: " + total);
@@ -62,7 +101,7 @@ public class Player {
 		return overallAverage=(double)made/total;
 	}
 
-	
+
 	public double calculateNamedSeasonAverage(int season){
 		// input of freeThrows is every single freeThrow in the dataset
 
@@ -75,9 +114,8 @@ public class Player {
 			if(ft.getSeason() == season){
 				shot_made = ft.getShotMade();
 				total++;
-				if(shot_made){
+				if(shot_made)
 					made++;
-				}
 			}
 		}	
 		if(total==0){ //if no freeThrows were found for that season
@@ -97,9 +135,9 @@ public class Player {
 	}
 	public ClutchFreeThrowPair clutchTimeAverage(){
 		// clutch time = last 5 miuntes of 4th quarter or OT and score within 5
-		
+
 		ClutchFreeThrowPair ftPair;
-		
+
 		int made=0;
 		int total=0;
 		int scoreDif,score1=0,score2=0,index;
@@ -113,27 +151,27 @@ public class Player {
 			while(fullScore.charAt(index)!=' '){
 				c = fullScore.charAt(index);
 				score1Str+=String.valueOf(c);
-				
+
 				index++;
 			}
 			score1 = Integer.parseInt(score1Str);
-			
+
 			while(fullScore.charAt(index)==' ' || fullScore.charAt(index)=='-'){
 				index++;
 			}
 			while(fullScore.charAt(index)!=' '){
 				c = fullScore.charAt(index);
 				score2Str+=String.valueOf(c);
-				
+
 				index++;
 				if(index>=fullScore.length())
 					break;
 			}
 			score2 = Integer.parseInt(score2Str);
-			
-			
+
+
 			scoreDif = Math.abs(score1 - score2);
-			
+
 			index=0;
 			String timeStr="";
 			while(ft.getTime().charAt(index)!=':'){
@@ -148,10 +186,10 @@ public class Player {
 					made++;
 			}
 		}
-		
+
 		double percent = (double) made/total; 
 		ftPair = new ClutchFreeThrowPair(percent , total);
-		
+
 		return ftPair;
 	}
 
@@ -170,7 +208,7 @@ public class Player {
 		return clutchTimeAverage().getPercentage() - overallAverage;
 	}
 
-	
+
 	public double getSeasonAverage(int season){
 		Integer x = Integer.valueOf(season);
 		if(seasonAverage == null || !seasonAverage.containsKey(x)){
@@ -178,7 +216,7 @@ public class Player {
 		}
 		return (double) seasonAverage.get(season);
 	}
-	
+
 	public boolean checkIfPlayedSeason(int season){
 		for(FreeThrow ft : freeThrowsTaken){
 			if(ft.getSeason() == season){
@@ -187,7 +225,7 @@ public class Player {
 		}
 		return false;
 	}
-	
+
 	public int getNumberOfTotalFTs(){
 		return numberOfFreeThrowsTaken;
 	}

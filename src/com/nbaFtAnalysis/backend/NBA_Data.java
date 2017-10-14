@@ -1,10 +1,6 @@
 package com.nbaFtAnalysis.backend;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -21,7 +17,7 @@ public class NBA_Data {
 		freeThrows = organiser.getFreeThrowArray();
 		playerList = new PlayerFreeThrowList(freeThrows);
 	}
-	
+
 	private void printFreeThrows(){
 		for(FreeThrow ft : freeThrows){
 			ft.printAllDetailsLineSpace();
@@ -65,14 +61,27 @@ public class NBA_Data {
 		return tempPlayer.clutchDifferential();
 	}
 	
+	public double getRegSeasonAverage(String name){
+		Player tempPlayer = playerList.getPlayer(name);
+		return tempPlayer.getRegSeasonAverage();
+	}
+	public double getPlayoffAverage(String name){
+		Player tempPlayer = playerList.getPlayer(name);
+		return tempPlayer.getPlayoffAverage();
+	}
+	public double getPlayoffDifferential(String name){
+		Player tempPlayer = playerList.getPlayer(name);
+		return tempPlayer.getPlayoffDifferential();
+	}
+
 	public void printMultipleSeasons(String searchPlayer){
 		// nice print of multiple seasons
-					TreeMap<Integer, Double> tm = getPlayerSeasons(searchPlayer);
-					System.out.println("------------------------------------------------");
-					for(Entry<Integer,Double> entry: tm.entrySet()){
-						System.out.println("year:" + entry.getKey() + "\tft: " + round(entry.getValue()*100,2)+"%");
-					}
-					System.out.println("------------------------------------------------");
+		TreeMap<Integer, Double> tm = getPlayerSeasons(searchPlayer);
+		System.out.println("------------------------------------------------");
+		for(Entry<Integer,Double> entry: tm.entrySet()){
+			System.out.println("year:" + entry.getKey() + "\tft: " + round(entry.getValue()*100,2)+"%");
+		}
+		System.out.println("------------------------------------------------");
 	}
 
 	public static double round(double value, int places) {
@@ -94,7 +103,7 @@ public class NBA_Data {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println();
 		System.out.println("enter in 'exit' to finish the application, or press the enter key now to proceed");
-		
+
 		boolean finish = false;
 		String searchPlayer;
 		while(!scanner.nextLine().toLowerCase().equals("exit") && !finish){
@@ -121,6 +130,8 @@ public class NBA_Data {
 			System.out.println("Clutch freethrow shooting:" + data.getClutchTimeScore(searchPlayer).getPercentage() + " on " + data.getClutchTimeScore(searchPlayer).getTotalAttempts()+" attempt(s)");
 
 			System.out.println("clutch differential: " + data.getClutchDifferential(searchPlayer));
+			
+			System.out.println("Playoff Differential: " + data.getPlayoffDifferential(searchPlayer));
 		}
 		System.out.println("------- Application Terminated --------");
 		scanner.close();
