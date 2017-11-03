@@ -22,6 +22,7 @@ public class Player {
 		freeThrowsTaken.add(freeThrow);
 		regSeasonAverage = -1.0;
 		playoffAverage = -1.0;
+		
 	}
 
 	public void addFT(FreeThrow ft){

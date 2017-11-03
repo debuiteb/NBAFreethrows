@@ -1,9 +1,16 @@
 package com.nbaFtAnalysis.backend;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.TreeMap;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 
 public class NBA_Data {
 
@@ -11,11 +18,13 @@ public class NBA_Data {
 
 	private PlayerFreeThrowList playerList;
 	private FreeThrow [] freeThrows;
+	private static NameSearchSet searchSet;
 
 	public NBA_Data(String csvFile){
 		DataOrganiser organiser = new DataOrganiser(csvFile);
 		freeThrows = organiser.getFreeThrowArray();
 		playerList = new PlayerFreeThrowList(freeThrows);
+		searchSet = playerList.getSearchSet();
 	}
 
 	private void printFreeThrows(){
@@ -59,7 +68,7 @@ public class NBA_Data {
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.clutchDifferential();
 	}
-	
+
 	public double getRegSeasonAverage(String name){
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.getRegSeasonAverage();
@@ -112,14 +121,76 @@ public class NBA_Data {
 				finish = true;
 				break;
 			}
-			while(!data.playerList.playerExists(searchPlayer)){
-				System.out.println("player not found, try again and watch yo spelling: ");
-				System.out.println("enter player name to search: ");
-				searchPlayer = scanner.nextLine().toLowerCase();
-				if(scanner.nextLine().toLowerCase().equals("exit")){
-					finish = true;
-					break;
+			while(!searchSet.doesContain(searchPlayer)){ // may need to change this to search the nameSearchTree
+				ArrayList<String> allPlayerNames = searchSet.getAll();
+				LevenshteinDistance leven = new LevenshteinDistance(4); // four is the arbitrary threshold so won't search go past four character changes
+				// search for similar names
+
+
+				HashMap<String,Integer> similarPlayerNames = new HashMap<String,Integer>();
+
+				for(String str : allPlayerNames){
+					int similarity = leven.apply(str, searchPlayer);
+					//System.out.println("CHECK LEVEN HERE !!! " + leven.apply( str , searchPlayer));
+					if(similarity <= 3 && similarity >= 0){
+						System.out.println("similar player " + str +" sim: " + similarity);
+						similarPlayerNames.put(str, similarity);
+					}
 				}
+				String [] nameArray = new String [similarPlayerNames.size()];
+				int [] simScoreArray = new int [similarPlayerNames.size()];
+				int index = 0;
+				for(Entry <String , Integer> e :  similarPlayerNames.entrySet()){
+					nameArray[index] = e.getKey();
+					simScoreArray[index] = e.getValue();
+					index++;
+				}
+				String tempStr;
+				int tempInt;
+				// bubble sort fine as lists will be short, usually <5
+				for(int i=0;i<nameArray.length;i++){
+					for(int j=1;j<(nameArray.length); j++){
+						if(simScoreArray[j] < simScoreArray[j-1]){
+							// swap elements in both arrays
+							tempStr = nameArray[j-1];
+							tempInt = simScoreArray[j-1];
+							simScoreArray[j-1] = simScoreArray[j];
+							nameArray[j-1] = nameArray[j];
+							simScoreArray[j] = tempInt;
+							nameArray[j] = tempStr;
+						}
+					}
+				}
+				System.out.println("-----FINAL------");
+				for(int x=0;x<similarPlayerNames.size();x++){
+					System.out.println(nameArray[x] + "\tscore:" + simScoreArray[x]);
+				}				
+
+				if(nameArray.length==0){
+					System.out.println("player not found, try again and watch yo spelling: ");
+					System.out.println("enter player name to search: ");
+					searchPlayer = scanner.nextLine().toLowerCase();
+					if(scanner.nextLine().toLowerCase().equals("exit")){
+						finish = true;
+						break;
+					}
+				}
+				else{
+					System.out.println("-----------------------");
+					System.out.println("Did you mean one of these guys?");
+					System.out.println("Enter the corresponding number if you meant to search fot that player. If you want to search for none if these players, enter 'n' ");
+					for(int in=0;in<nameArray.length;in++){
+						System.out.println("["+ in +"]" + " " + nameArray[in]);
+					}
+					searchPlayer = scanner.nextLine().toLowerCase();
+					if(!searchPlayer.equals("n")){
+						int numEntered = Integer.valueOf(searchPlayer);
+						if(numEntered < nameArray.length && numEntered >= 0){
+							searchPlayer = nameArray[numEntered];
+						}
+					}
+				}
+				
 			}
 
 			System.out.println("Player: " + searchPlayer +" , "+ "Overall average: " + data.getPlayerOverallAverage(searchPlayer));
@@ -129,7 +200,7 @@ public class NBA_Data {
 			System.out.println("Clutch freethrow shooting:" + data.getClutchTimeScore(searchPlayer).getPercentage() + " on " + data.getClutchTimeScore(searchPlayer).getTotalAttempts()+" attempt(s)");
 
 			System.out.println("clutch differential: " + data.getClutchDifferential(searchPlayer));
-			
+
 			System.out.println("Playoff Differential: " + data.getPlayoffDifferential(searchPlayer));
 		}
 		System.out.println("------- Application Terminated --------");

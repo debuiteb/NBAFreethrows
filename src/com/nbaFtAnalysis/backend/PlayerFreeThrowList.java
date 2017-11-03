@@ -1,15 +1,20 @@
 package com.nbaFtAnalysis.backend;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 public class PlayerFreeThrowList {
 
 	private HashMap <Player,ArrayList<FreeThrow>> playerList;
 	private Player currentPlayer;
+	private NameSearchSet searchSet;
+
+	// TODO: implement playerList2 to allow  searching by player name - may not need separate NameSearchTree class
 
 	public PlayerFreeThrowList(FreeThrow [] ftArray){
 
 		playerList = new HashMap <Player,ArrayList<FreeThrow>>();
+		searchSet = new NameSearchSet();
 
 		for(FreeThrow currentFT : ftArray){
 			String name = currentFT.getPlayerName();
@@ -20,12 +25,12 @@ public class PlayerFreeThrowList {
 				currentPlayer.addFT(currentFT);
 				playerList.put(currentPlayer, tempList);
 			}
-			else{
+			else{ // adding a player into the playerList
 				tempPlayer = new Player(name,currentFT);
 				ArrayList <FreeThrow> tempList = new ArrayList<FreeThrow>();
 				tempList.add(currentFT);
 				playerList.put(tempPlayer, tempList);
-
+				searchSet.add(name);
 			}
 		}
 	}
@@ -59,7 +64,7 @@ public class PlayerFreeThrowList {
 		return false;
 
 	}
-	
+
 	public Player getPlayer(String name){
 		for(Player tempPlayer : playerList.keySet()){
 			if(tempPlayer.getName().equals(name.toLowerCase()))
@@ -68,4 +73,8 @@ public class PlayerFreeThrowList {
 		return null;
 
 	}	
+
+	public NameSearchSet getSearchSet (){
+		return searchSet;
+	}
 }
