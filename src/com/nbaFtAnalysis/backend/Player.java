@@ -181,6 +181,8 @@ public class Player {
 			score1Str = "";
 			score2Str = "";
 			fullScore = ft.getScore();
+			if(fullScore.equals("regular"))
+				continue;
 			index=0;
 			char c;
 			while(fullScore.charAt(index)!=' '){

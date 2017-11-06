@@ -4,6 +4,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Scanner;
@@ -63,7 +64,7 @@ public class NBA_Data {
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.clutchTimeAverage();
 	}
-	
+
 	private HashMap<String,ClutchFreeThrowPair> getClutchList(){
 		// map with amount of clutch time fts
 		HashMap<String,ClutchFreeThrowPair> map = new HashMap<String,ClutchFreeThrowPair>();
@@ -77,12 +78,62 @@ public class NBA_Data {
 				continue;	
 			map.put(player, ftPair);
 		}
-		
+
 		return map;
 	}
+
+	private LinkedList[] clutchListLinkedListArray(){
+		HashMap<String,ClutchFreeThrowPair> map = getClutchList();
+		int size = map.size();
+		LinkedList []  list = new LinkedList[size];
+		String name;
+		int attempts;
+		double percent;
+
+		int count = 0;
+		for(Entry <String,ClutchFreeThrowPair> entry : map.entrySet()){
+			name = entry.getKey();
+			attempts = entry.getValue().getTotalAttempts();
+			percent = entry.getValue().getPercentage();
+			LinkedList<Comparable> tempList = new LinkedList();
+			tempList.add(name);
+			tempList.add(attempts);
+			tempList.add(percent);
+			list[count] = tempList;
+			count++;
+		}
+		return list;
+	}
+
+	public LinkedList []  sortClutchListByAttempts(){
+		LinkedList [] list = clutchListLinkedListArray();
+		int length = list.length;
+		for(int i=0;i<length;i++){
+			for(int j=0;j<length;j++){
+				//LinkedList l1 = list[i];
+				//int at1 = (int) l1.get(1);
+				if((int)list[i].get(1) < (int) list[j].get(1)){
+					LinkedList<?> tempList = list[i];
+					list[i] = list[j];
+					list[j] = tempList;
+				}
+			}
+		}
+		return list;
+	}
 	
+	public void printClutchFTsByAttempts(){
+		LinkedList [] list = sortClutchListByAttempts();
+		System.out.println(" attempts \t     percent \t  player");
+		for(LinkedList l : list){
+			System.out.print(l.getFirst() + "\t");
+			System.out.print(l.get(1) + "\t");
+			System.out.println(l.getLast() + "\t");
+		}
+	}
+
 	// could have an array of linked lists of 3 elements to sort the cluctchFTlist
-	
+
 	public void printClutchFTs(){
 		HashMap<String,ClutchFreeThrowPair> map = getClutchList();
 		double percent;
@@ -94,13 +145,13 @@ public class NBA_Data {
 			ClutchFreeThrowPair pair = entry.getValue();
 			percent = pair.getPercentage();
 			attempts =pair.getTotalAttempts();
-			
+
 			System.out.println("  " + attempts + "\t\t" + percent +"\t" + name);
 		}
 	}
-	
-	
-	
+
+
+
 
 	public double getClutchDifferential(String name){
 		Player tempPlayer = playerList.getPlayer(name);
@@ -145,8 +196,10 @@ public class NBA_Data {
 		String csvFile = "nba-free-throws/free_throws.csv";
 		NBA_Data data = new NBA_Data(csvFile);
 		data.printNumberOfFreeThrows();
-		
+
 		data.printClutchFTs();
+		System.out.println("-----    -------    --------    --------");
+		data.printClutchFTsByAttempts();
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println();
@@ -230,7 +283,7 @@ public class NBA_Data {
 						}
 					}
 				}
-				
+
 			}
 
 			System.out.println("Player: " + searchPlayer +" , "+ "Overall average: " + data.getPlayerOverallAverage(searchPlayer));
