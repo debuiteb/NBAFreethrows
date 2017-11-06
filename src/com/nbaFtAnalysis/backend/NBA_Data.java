@@ -88,16 +88,19 @@ public class NBA_Data {
 		double percent;
 		String name;
 		int attempts;
-		System.out.println("attempts \t percent \t player");
+		System.out.println("attempts \t     percent \t\t  player");
 		for(Entry <String,ClutchFreeThrowPair>  entry : map.entrySet()){
 			name = entry.getKey();
 			ClutchFreeThrowPair pair = entry.getValue();
 			percent = pair.getPercentage();
 			attempts =pair.getTotalAttempts();
 			
-			System.out.println(attempts + "\t" + percent +"\t" + name);
+			System.out.println("  " + attempts + "\t\t" + percent +"\t" + name);
 		}
 	}
+	
+	
+	
 
 	public double getClutchDifferential(String name){
 		Player tempPlayer = playerList.getPlayer(name);
