@@ -2,6 +2,7 @@ package com.nbaFtAnalysis.backend;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 public class PlayerFreeThrowList {
 
@@ -9,10 +10,10 @@ public class PlayerFreeThrowList {
 	private Player currentPlayer;
 	private NameSearchSet searchSet; //this is a set of all the player names to allow quick search to see if a player is in the dataset
 
-	
+
 	// ###	This class represents a list of players, and each player points to a list of their free-throws ### //
-	
-	
+
+
 	public PlayerFreeThrowList(FreeThrow [] ftArray){
 
 		playerList = new HashMap <Player,ArrayList<FreeThrow>>();
@@ -78,5 +79,14 @@ public class PlayerFreeThrowList {
 
 	public NameSearchSet getSearchSet (){
 		return searchSet;
+	}
+
+	public Player [] getAllPlayers(){
+		List<Player> players = new ArrayList<Player>();
+		for(Player p : playerList.keySet()){
+			players.add(p);
+		}
+		Player [] playAr = players.toArray(new Player[players.size()]);
+		return playAr;
 	}
 }

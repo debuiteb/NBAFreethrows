@@ -25,6 +25,7 @@ public class Player {
 		freeThrowsTaken.add(freeThrow);
 		regSeasonAverage = -1.0;
 		playoffAverage = -1.0;
+		overallAverage = -1.0;
 
 	}
 	public static String shortenName(String longName){ // this is only called if a player's name is greater than 40 characters, eg, if the player name cell was mixed with another
@@ -116,7 +117,7 @@ public class Player {
 		return playoffAverage = (double) made/total;
 	}
 
-	public double calculateOverallAverageFromSinglePlayer(){
+	public double calculateOverallAverage(){
 		// input of freeThrows is every single freeThrow in the dataset
 
 		boolean shot_made;
@@ -164,8 +165,8 @@ public class Player {
 	}
 
 	public int getNumberOfClutchFreeThrows(){
-		//TODO
-		return 0;
+		ClutchFreeThrowPair ftPair = clutchTimeAverage();
+		return  ftPair.getTotalAttempts();
 	}
 	public ClutchFreeThrowPair clutchTimeAverage(){
 		// clutch time = last 5 miuntes of 4th quarter or OT and score within 5
@@ -241,6 +242,8 @@ public class Player {
 
 
 	public double clutchDifferential(){
+		if(overallAverage == -1.0)
+			calculateOverallAverage();
 		return clutchTimeAverage().getPercentage() - overallAverage;
 	}
 

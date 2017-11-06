@@ -47,7 +47,7 @@ public class NBA_Data {
 	}
 	public double getPlayerOverallAverage(String name){
 		Player tempPlayer = playerList.getPlayer(name);
-		return tempPlayer.calculateOverallAverageFromSinglePlayer();
+		return tempPlayer.calculateOverallAverage();
 	}
 
 	public double getPlayerSeasonAverage(String name,int season){ // player avreage ft% for a specified season
@@ -313,6 +313,44 @@ public class NBA_Data {
 		scanner.close();
 	}
 
+	private LinkedList [] getClutchTimeDifferentials(){
+		
+		ArrayList <LinkedList> arList = new ArrayList <LinkedList>();
+		Player [] players = playerList.getAllPlayers();
+		String name;
+		int attempts;
+		double dif;
+		int count = 0;
+		for (Player player : players){
+			attempts = player.getNumberOfClutchFreeThrows();
+			if(attempts > 50){
+				LinkedList tempList = new LinkedList();
+				name = player.getName();
+				dif = player.clutchDifferential();
+				
+				tempList.add(name);
+				tempList.add(attempts);
+				tempList.add(dif);
+				
+				arList.add(tempList);
+				count++;
+			}
+			
+		}
+		LinkedList [] list = arList.toArray(new LinkedList[arList.size()]);
+				
+		return list;
+	}
+	
+	public void printClutchTimeDifferentials(){
+		LinkedList [] list = getClutchTimeDifferentials();
+		System.out.println(" player \t     attempts \t  differential");
+		for(LinkedList l : list){
+			System.out.print(l.getFirst() + "\t");
+			System.out.print(l.get(1) + "\t");
+			System.out.println(l.getLast() + "\t");
+		}
+	}
 
 	public static void main(String[] args) {
 
@@ -323,6 +361,8 @@ public class NBA_Data {
 		data.printClutchFTs();
 		System.out.println("-----    -------    --------    --------");
 		data.printClutchFTsByAttemptsDescending();
+		
+		data.printClutchTimeDifferentials();
 		
 		data.runApplication();
 
