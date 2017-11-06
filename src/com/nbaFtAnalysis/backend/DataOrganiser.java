@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+
+// ### Class to read in and initialise the data ### //
+
 public class DataOrganiser {
 
 	private FreeThrow [] freeThrows;
@@ -22,13 +25,11 @@ public class DataOrganiser {
 	private void initialiseData(String csvFile){
 		int csvLength = 0;
 
-
 		try{
 			BufferedReader tempBr = new BufferedReader(new FileReader(csvFile));
 			tempBr.readLine();
 
-
-			while ((tempBr.readLine()) != null ) {
+			while ((tempBr.readLine()) != null ) { // counts the number of lines in the csv file
 				csvLength++;
 			}
 			numberOfFreeThrows = csvLength;
@@ -52,9 +53,7 @@ public class DataOrganiser {
 		String line = "";
 		String cvsSplitBy = ",";
 
-		String[] ft = new String[11];
-
-
+		String[] ft = new String[11]; // number of columns
 
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
@@ -66,9 +65,7 @@ public class DataOrganiser {
 				ft = line.split(cvsSplitBy);
 
 				FreeThrow f1  = new FreeThrow(ft);
-				
 				freeThrows[y] = f1;
-
 
 				y++;
 			}
@@ -77,6 +74,5 @@ public class DataOrganiser {
 			e.printStackTrace();
 		}
 	}
-
 
 }

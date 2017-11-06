@@ -1,5 +1,7 @@
 package com.nbaFtAnalysis.backend;
 
+// ### Each object of this class has the two important instance variables of precentage in clutchtime and their total clutchtime attempts ### //
+
 public class ClutchFreeThrowPair {
 	
 	private double percent;

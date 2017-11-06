@@ -9,6 +9,7 @@ public class FreeThrow {
 
 	public FreeThrow(String[] freeThrow){
 
+		// the columns skipped are ones that don't provide data relevenat to this apps
 		end_result = freeThrow[0];
 		game = freeThrow[1];
 		freeThrow[3] = freeThrow[3].substring(0, 1);

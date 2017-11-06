@@ -7,10 +7,12 @@ public class PlayerFreeThrowList {
 
 	private HashMap <Player,ArrayList<FreeThrow>> playerList;
 	private Player currentPlayer;
-	private NameSearchSet searchSet;
+	private NameSearchSet searchSet; //this is a set of all the player names to allow quick search to see if a player is in the dataset
 
-	// TODO: implement playerList2 to allow  searching by player name - may not need separate NameSearchTree class
-
+	
+	// ###	This class represents a list of players, and each player points to a list of their free-throws ### //
+	
+	
 	public PlayerFreeThrowList(FreeThrow [] ftArray){
 
 		playerList = new HashMap <Player,ArrayList<FreeThrow>>();

@@ -9,13 +9,13 @@ public class Player {
 	private String name;
 	private int numberOfFreeThrowsTaken;
 	private double overallAverage;
-	private Map<Object,Object>  seasonAverage;
+	private Map<Object,Object>  seasonAverage; // the keys are the sesaons the player played and the values are the percentages for that season
 	private ArrayList<FreeThrow> freeThrowsTaken; //this is an arraylist of every single freethrow taken by the instance of the player
 	private double playoffAverage;
 	private double regSeasonAverage;
 
 	public Player(String name, FreeThrow freeThrow){
-		if(name.length() < 40)
+		if(name.length() < 40) // this is to check & handle the instance where one row has the data in the row cells
 			this.name = name.toLowerCase();
 		else
 			this.name = shortenName(name);
@@ -27,7 +27,7 @@ public class Player {
 		playoffAverage = -1.0;
 
 	}
-	public static String shortenName(String longName){
+	public static String shortenName(String longName){ // this is only called if a player's name is greater than 40 characters, eg, if the player name cell was mixed with another
 		char [] charAr = longName.toCharArray();
 		int spaceCount = 0;
 		ArrayList <Character> charReturn = new ArrayList<Character> ();
@@ -48,13 +48,12 @@ public class Player {
 		return getStringRepresentation(charReturn);
 	}
 	
-	public static String getStringRepresentation(ArrayList<Character> list)
+	public static String getStringRepresentation(ArrayList<Character> list) // converts an arraylist of type character to a string
 	{    
 	    StringBuilder builder = new StringBuilder(list.size());
 	    for(Character ch: list)
-	    {
 	        builder.append(ch);
-	    }
+	    
 	    return builder.toString();
 	}
 	

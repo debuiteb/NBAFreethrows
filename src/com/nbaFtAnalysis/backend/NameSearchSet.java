@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+// ### 	Class to allow quick searching to check if player is in the datset ###
+
 public class NameSearchSet {
 
-	// hashTree of all the players' names that will map the real player name to a position in the playerList
+
 	private Set<String> lookupTable;
 	public NameSearchSet(){
 		lookupTable = new LinkedHashSet<String>();
@@ -16,7 +18,7 @@ public class NameSearchSet {
 		return lookupTable.contains(playerName);
 	}
 
-	public static String shortenName(String longName){
+	public static String shortenName(String longName){ // this is only called if a player's name is greater than 40 characters, eg, if the player name cell was mixed with another
 		char [] charAr = longName.toCharArray();
 		int spaceCount = 0;
 		ArrayList <Character> charReturn = new ArrayList<Character> ();
@@ -37,7 +39,7 @@ public class NameSearchSet {
 		return getStringRepresentation(charReturn);
 	}
 	
-	public static String getStringRepresentation(ArrayList<Character> list)
+	private static String getStringRepresentation(ArrayList<Character> list) // converts an arraylist of type character to a string
 	{    
 	    StringBuilder builder = new StringBuilder(list.size());
 	    for(Character ch: list)
@@ -58,7 +60,7 @@ public class NameSearchSet {
 			}
 		}
 	}
-	public ArrayList<String> getAll(){
+	public ArrayList<String> getAll(){ // returns all the names in the set as an arraylist
 		ArrayList<String> list = new ArrayList();
 		for(String s : lookupTable){
 			list.add(s);

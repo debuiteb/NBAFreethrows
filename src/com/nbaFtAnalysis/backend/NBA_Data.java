@@ -50,22 +50,22 @@ public class NBA_Data {
 		return tempPlayer.calculateOverallAverageFromSinglePlayer();
 	}
 
-	public double getPlayerSeasonAverage(String name,int season){
+	public double getPlayerSeasonAverage(String name,int season){ // player avreage ft% for a specified season
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.getSeasonAverage(season);
 	}
 
-	public TreeMap<Integer, Double> getPlayerSeasons(String name){
+	public TreeMap<Integer, Double> getPlayerSeasons(String name){ //get all the season averages of a specified player
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.getAllSeasons();
 	}
 
-	public ClutchFreeThrowPair getClutchTimeScore(String name){
+	public ClutchFreeThrowPair getClutchTimeScore(String name){ // get the average ft% of a player in clutchTime
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.clutchTimeAverage();
 	}
 
-	private HashMap<String,ClutchFreeThrowPair> getClutchList(){
+	private HashMap<String,ClutchFreeThrowPair> getClutchList(){ // get a list of player names that map to their clutch-time ft% and their clutch-time number of attempts
 		// map with amount of clutch time fts
 		HashMap<String,ClutchFreeThrowPair> map = new HashMap<String,ClutchFreeThrowPair>();
 		ArrayList<String> playerNames = searchSet.getAll();
@@ -82,7 +82,7 @@ public class NBA_Data {
 		return map;
 	}
 
-	private LinkedList[] clutchListLinkedListArray(){
+	private LinkedList[] clutchListLinkedListArray(){ // get a list of clutch-time fts as an array of linked lists - each linkedlist has player name, clutch-time ft% and clutch-time attempts
 		HashMap<String,ClutchFreeThrowPair> map = getClutchList();
 		int size = map.size();
 		LinkedList []  list = new LinkedList[size];
@@ -105,7 +105,7 @@ public class NBA_Data {
 		return list;
 	}
 
-	public LinkedList []  sortClutchListByAttempts(){
+	public LinkedList []  sortClutchListByAttemptsAscending(){ //sorts an array of linked lists of clutch time fts in asceding order
 		LinkedList [] list = clutchListLinkedListArray();
 		int length = list.length;
 		for(int i=0;i<length;i++){
@@ -121,9 +121,34 @@ public class NBA_Data {
 		}
 		return list;
 	}
+	public void printClutchFTsByAttemptsAscending(){
+		LinkedList [] list = sortClutchListByAttemptsAscending();
+		System.out.println(" attempts \t     percent \t  player");
+		for(LinkedList l : list){
+			System.out.print(l.getFirst() + "\t");
+			System.out.print(l.get(1) + "\t");
+			System.out.println(l.getLast() + "\t");
+		}
+	}
 	
-	public void printClutchFTsByAttempts(){
-		LinkedList [] list = sortClutchListByAttempts();
+	public LinkedList []  sortClutchListByAttemptsDescending(){ //sorts an array of linked lists of clutch time fts in descending order
+		LinkedList [] list = clutchListLinkedListArray();
+		int length = list.length;
+		for(int i=0;i<length;i++){
+			for(int j=0;j<length;j++){
+				//LinkedList l1 = list[i];
+				//int at1 = (int) l1.get(1);
+				if((int)list[i].get(1) > (int) list[j].get(1)){
+					LinkedList<?> tempList = list[i];
+					list[i] = list[j];
+					list[j] = tempList;
+				}
+			}
+		}
+		return list;
+	}
+	public void printClutchFTsByAttemptsDescending(){
+		LinkedList [] list = sortClutchListByAttemptsDescending();
 		System.out.println(" attempts \t     percent \t  player");
 		for(LinkedList l : list){
 			System.out.print(l.getFirst() + "\t");
@@ -132,7 +157,6 @@ public class NBA_Data {
 		}
 	}
 
-	// could have an array of linked lists of 3 elements to sort the cluctchFTlist
 
 	public void printClutchFTs(){
 		HashMap<String,ClutchFreeThrowPair> map = getClutchList();
@@ -189,18 +213,7 @@ public class NBA_Data {
 		return bd.doubleValue();
 	}
 
-
-
-	public static void main(String[] args) {
-
-		String csvFile = "nba-free-throws/free_throws.csv";
-		NBA_Data data = new NBA_Data(csvFile);
-		data.printNumberOfFreeThrows();
-
-		data.printClutchFTs();
-		System.out.println("-----    -------    --------    --------");
-		data.printClutchFTsByAttempts();
-
+	public void runApplication(){
 		Scanner scanner = new Scanner(System.in);
 		System.out.println();
 		System.out.println("enter in 'exit' to finish the application, or press the enter key now to proceed");
@@ -286,18 +299,34 @@ public class NBA_Data {
 
 			}
 
-			System.out.println("Player: " + searchPlayer +" , "+ "Overall average: " + data.getPlayerOverallAverage(searchPlayer));
+			System.out.println("Player: " + searchPlayer +" , "+ "Overall average: " + getPlayerOverallAverage(searchPlayer));
 
-			data.printMultipleSeasons(searchPlayer);
+			printMultipleSeasons(searchPlayer);
 
-			System.out.println("Clutch freethrow shooting:" + data.getClutchTimeScore(searchPlayer).getPercentage() + " on " + data.getClutchTimeScore(searchPlayer).getTotalAttempts()+" attempt(s)");
+			System.out.println("Clutch freethrow shooting:" + getClutchTimeScore(searchPlayer).getPercentage() + " on " + getClutchTimeScore(searchPlayer).getTotalAttempts()+" attempt(s)");
 
-			System.out.println("clutch differential: " + data.getClutchDifferential(searchPlayer));
+			System.out.println("clutch differential: " + getClutchDifferential(searchPlayer));
 
-			System.out.println("Playoff Differential: " + data.getPlayoffDifferential(searchPlayer));
+			System.out.println("Playoff Differential: " + getPlayoffDifferential(searchPlayer));
 		}
 		System.out.println("------- Application Terminated --------");
 		scanner.close();
+	}
+
+
+	public static void main(String[] args) {
+
+		String csvFile = "nba-free-throws/free_throws.csv";
+		NBA_Data data = new NBA_Data(csvFile);
+		data.printNumberOfFreeThrows();
+
+		data.printClutchFTs();
+		System.out.println("-----    -------    --------    --------");
+		data.printClutchFTsByAttemptsDescending();
+		
+		data.runApplication();
+
+		
 	}
 
 }
