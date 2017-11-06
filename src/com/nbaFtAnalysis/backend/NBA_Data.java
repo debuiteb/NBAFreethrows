@@ -63,6 +63,41 @@ public class NBA_Data {
 		Player tempPlayer = playerList.getPlayer(name);
 		return tempPlayer.clutchTimeAverage();
 	}
+	
+	private HashMap<String,ClutchFreeThrowPair> getClutchList(){
+		// map with amount of clutch time fts
+		HashMap<String,ClutchFreeThrowPair> map = new HashMap<String,ClutchFreeThrowPair>();
+		ArrayList<String> playerNames = searchSet.getAll();
+		ClutchFreeThrowPair ftPair;
+		int numAttempts;
+		for(String player : playerNames){
+			ftPair = getClutchTimeScore(player);
+			numAttempts = ftPair.getTotalAttempts();
+			if(numAttempts<70)
+				continue;	
+			map.put(player, ftPair);
+		}
+		
+		return map;
+	}
+	
+	// could have an array of linked lists of 3 elements to sort the cluctchFTlist
+	
+	public void printClutchFTs(){
+		HashMap<String,ClutchFreeThrowPair> map = getClutchList();
+		double percent;
+		String name;
+		int attempts;
+		System.out.println("attempts \t percent \t player");
+		for(Entry <String,ClutchFreeThrowPair>  entry : map.entrySet()){
+			name = entry.getKey();
+			ClutchFreeThrowPair pair = entry.getValue();
+			percent = pair.getPercentage();
+			attempts =pair.getTotalAttempts();
+			
+			System.out.println(attempts + "\t" + percent +"\t" + name);
+		}
+	}
 
 	public double getClutchDifferential(String name){
 		Player tempPlayer = playerList.getPlayer(name);
@@ -107,6 +142,8 @@ public class NBA_Data {
 		String csvFile = "nba-free-throws/free_throws.csv";
 		NBA_Data data = new NBA_Data(csvFile);
 		data.printNumberOfFreeThrows();
+		
+		data.printClutchFTs();
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println();

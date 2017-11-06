@@ -15,15 +15,49 @@ public class Player {
 	private double regSeasonAverage;
 
 	public Player(String name, FreeThrow freeThrow){
-		this.name = name.toLowerCase();
+		if(name.length() < 40)
+			this.name = name.toLowerCase();
+		else
+			this.name = shortenName(name);
 		numberOfFreeThrowsTaken = 1;
 		seasonAverage = new HashMap<Object,Object>();
 		freeThrowsTaken = new ArrayList<FreeThrow>();
 		freeThrowsTaken.add(freeThrow);
 		regSeasonAverage = -1.0;
 		playoffAverage = -1.0;
-		
+
 	}
+	public static String shortenName(String longName){
+		char [] charAr = longName.toCharArray();
+		int spaceCount = 0;
+		ArrayList <Character> charReturn = new ArrayList<Character> ();
+		int count=0;
+		for(char letter : charAr){
+			if(count == 0 && letter ==' '){ //only for the first letter
+				spaceCount++;
+				count++;
+				continue;
+			}
+			if(letter == ' ' && spaceCount==1) //first name finished
+				spaceCount++;
+			else if(letter == ' ' && spaceCount==2) // after second name
+				return getStringRepresentation(charReturn);
+			count++;
+			charReturn.add(letter);
+		}
+		return getStringRepresentation(charReturn);
+	}
+	
+	public static String getStringRepresentation(ArrayList<Character> list)
+	{    
+	    StringBuilder builder = new StringBuilder(list.size());
+	    for(Character ch: list)
+	    {
+	        builder.append(ch);
+	    }
+	    return builder.toString();
+	}
+	
 
 	public void addFT(FreeThrow ft){
 		freeThrowsTaken.add(ft);
@@ -37,7 +71,7 @@ public class Player {
 	public String getName(){
 		return name;
 	}
-	
+
 	public double getPlayoffAverage(){
 		if(playoffAverage == -1.0)
 			return calculatePlayoffAverage();
@@ -64,7 +98,7 @@ public class Player {
 		}
 		if(total==0)
 			return -1.0;
-		
+
 		return regSeasonAverage = (double) made/total;
 	}
 	public double calculatePlayoffAverage(){
@@ -79,7 +113,7 @@ public class Player {
 		}
 		if(total==0)
 			return -1.0;
-		
+
 		return playoffAverage = (double) made/total;
 	}
 
