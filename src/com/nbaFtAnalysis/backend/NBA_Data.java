@@ -129,6 +129,7 @@ public class NBA_Data {
 			System.out.print(l.get(1) + "\t");
 			System.out.println(l.getLast() + "\t");
 		}
+		System.out.println();
 	}
 	
 	public LinkedList []  sortClutchListByAttemptsDescending(){ //sorts an array of linked lists of clutch time fts in descending order
@@ -155,6 +156,7 @@ public class NBA_Data {
 			System.out.print(l.get(1) + "\t");
 			System.out.println(l.getLast() + "\t");
 		}
+		System.out.println();
 	}
 
 
@@ -172,6 +174,7 @@ public class NBA_Data {
 
 			System.out.println("  " + attempts + "\t\t" + percent +"\t" + name);
 		}
+		System.out.println();
 	}
 
 
@@ -350,6 +353,7 @@ public class NBA_Data {
 			System.out.print(l.get(1) + "\t");
 			System.out.println(l.getLast() + "\t");
 		}
+		System.out.println();
 	}
 
 	
@@ -373,12 +377,42 @@ public class NBA_Data {
 	}
 	public void printClutchFTsByDifferentialsDescending(){
 		LinkedList [] list = sortClutchListByDifferentialDescending();
-		System.out.println(" player \t     attempts \t  differential");
+		System.out.println(" player \tattempts \tdifferential");
 		for(LinkedList l : list){
 			System.out.print(l.getFirst() + "\t");
 			System.out.print(l.get(1) + "\t");
 			System.out.println(l.getLast() + "\t");
 		}
+		System.out.println();
+	}
+	
+	public LinkedList []  sortClutchListByDifferentialAscending(){ //sorts an array of linked lists of clutch time fts in descending order
+		LinkedList [] list = getClutchTimeDifferentials();
+		int length = list.length;
+		for(int i=0;i<length;i++){
+			for(int j=0;j<length;j++){
+				//LinkedList l1 = list[i];
+				//int at1 = (int) l1.get(1);
+				//System.out.println(list[i].get(2).getClass());
+				
+				if( ((Double) list[i].get(2)).doubleValue() <  ((Double) list[j].get(2)).doubleValue() ){
+					LinkedList<?> tempList = list[i];
+					list[i] = list[j];
+					list[j] = tempList;
+				}
+			}
+		}
+		return list;
+	}
+	public void printClutchFTsByDifferentialsAscending(){
+		LinkedList [] list = sortClutchListByDifferentialAscending();
+		System.out.println(" player \tattempts \tdifferential");
+		for(LinkedList l : list){
+			System.out.print(l.getFirst() + "\t");
+			System.out.print(l.get(1) + " \t");
+			System.out.println(l.getLast() + " \t");
+		}
+		System.out.println();
 	}
 		
 	public static void main(String[] args) {
@@ -391,7 +425,7 @@ public class NBA_Data {
 		System.out.println("-----    -------    --------    --------");
 		data.printClutchFTsByAttemptsDescending();
 		
-		data.printClutchFTsByDifferentialsDescending();
+		data.printClutchFTsByDifferentialsAscending();
 		
 		data.runApplication();
 
