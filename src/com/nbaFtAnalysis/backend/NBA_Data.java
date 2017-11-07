@@ -342,7 +342,7 @@ public class NBA_Data {
 		return list;
 	}
 	
-	public void printClutchTimeDifferentials(){
+	public void printClutchTimeDifferentials(){ // prints all players clutch time differentials, unordered
 		LinkedList [] list = getClutchTimeDifferentials();
 		System.out.println(" player \t     attempts \t  differential");
 		for(LinkedList l : list){
@@ -352,6 +352,35 @@ public class NBA_Data {
 		}
 	}
 
+	
+	public LinkedList []  sortClutchListByDifferentialDescending(){ //sorts an array of linked lists of clutch time fts in descending order
+		LinkedList [] list = getClutchTimeDifferentials();
+		int length = list.length;
+		for(int i=0;i<length;i++){
+			for(int j=0;j<length;j++){
+				//LinkedList l1 = list[i];
+				//int at1 = (int) l1.get(1);
+				//System.out.println(list[i].get(2).getClass());
+				
+				if( ((Double) list[i].get(2)).doubleValue() >  ((Double) list[j].get(2)).doubleValue() ){
+					LinkedList<?> tempList = list[i];
+					list[i] = list[j];
+					list[j] = tempList;
+				}
+			}
+		}
+		return list;
+	}
+	public void printClutchFTsByDifferentialsDescending(){
+		LinkedList [] list = sortClutchListByDifferentialDescending();
+		System.out.println(" player \t     attempts \t  differential");
+		for(LinkedList l : list){
+			System.out.print(l.getFirst() + "\t");
+			System.out.print(l.get(1) + "\t");
+			System.out.println(l.getLast() + "\t");
+		}
+	}
+		
 	public static void main(String[] args) {
 
 		String csvFile = "nba-free-throws/free_throws.csv";
@@ -362,7 +391,7 @@ public class NBA_Data {
 		System.out.println("-----    -------    --------    --------");
 		data.printClutchFTsByAttemptsDescending();
 		
-		data.printClutchTimeDifferentials();
+		data.printClutchFTsByDifferentialsDescending();
 		
 		data.runApplication();
 

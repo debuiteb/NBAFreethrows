@@ -130,8 +130,8 @@ public class Player {
 			if(shot_made)
 				made++;
 		}
-		System.out.println("made: " + made);
-		System.out.println("total: " + total);
+//		System.out.println("made: " + made);
+//		System.out.println("total: " + total);
 
 		return overallAverage=(double)made/total;
 	}
