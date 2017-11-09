@@ -264,6 +264,10 @@ public class Player {
 		}
 		return false;
 	}
+	
+	public ArrayList<FreeThrow> getFreeThrowsTaken(){
+		return this.freeThrowsTaken;
+	}
 
 	public int getNumberOfTotalFTs(){
 		return numberOfFreeThrowsTaken;

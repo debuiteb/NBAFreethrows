@@ -17,13 +17,14 @@ public class NBA_Data {
 	private PlayerFreeThrowList playerList;
 	private FreeThrow [] freeThrows;
 	private static NameSearchSet searchSet;
+	private Player [] players;
 
 	public NBA_Data(String csvFile){
 		DataOrganiser organiser = new DataOrganiser(csvFile);
 		freeThrows = organiser.getFreeThrowArray();
 		playerList = new PlayerFreeThrowList(freeThrows);
 		searchSet = playerList.getSearchSet();
-				
+		players = playerList.getAllPlayers();	
 	}
 
 	private void printFreeThrows(){
@@ -317,7 +318,7 @@ public class NBA_Data {
 	private LinkedList [] getClutchTimeDifferentials(){
 		
 		ArrayList <LinkedList> arList = new ArrayList <LinkedList>();
-		Player [] players = playerList.getAllPlayers();
+		
 		String name;
 		int attempts;
 		double dif;
