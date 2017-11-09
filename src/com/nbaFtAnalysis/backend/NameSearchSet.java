@@ -61,7 +61,7 @@ public class NameSearchSet {
 		}
 	}
 	public ArrayList<String> getAll(){ // returns all the names in the set as an arraylist
-		ArrayList<String> list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		for(String s : lookupTable){
 			list.add(s);
 		}

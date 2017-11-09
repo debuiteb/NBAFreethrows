@@ -11,17 +11,26 @@ import java.io.IOException;
 public class DataOrganiser {
 
 	private FreeThrow [] freeThrows;
-	private int numberOfFreeThrows;
-	
+	//private int numberOfFreeThrows;
+
 	public DataOrganiser(String csvFile){
+
+
+		long startTime = System.nanoTime();
+
+
 		initialiseData(csvFile);
 		readInData(csvFile);
+		long endTime = System.nanoTime();
+
+		long duration = ((endTime - startTime)/1000000);  //divide by 1000000 to get milliseconds.
+		System.out.println("normal read in took " + duration +" ms");
 	}
-	
+
 	public FreeThrow [] getFreeThrowArray(){
 		return freeThrows;
 	}
-	
+
 	private void initialiseData(String csvFile){
 		int csvLength = 0;
 
@@ -32,7 +41,7 @@ public class DataOrganiser {
 			while ((tempBr.readLine()) != null ) { // counts the number of lines in the csv file
 				csvLength++;
 			}
-			numberOfFreeThrows = csvLength;
+			//numberOfFreeThrows = csvLength;
 
 			tempBr.close();
 
@@ -57,14 +66,15 @@ public class DataOrganiser {
 
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
-			br.readLine();
+			br.readLine(); // skips the first row, skips the column titles
 
+			FreeThrow f1;
 			while ((line = br.readLine()) != null ) {
 
 				// use comma as separator
 				ft = line.split(cvsSplitBy);
 
-				FreeThrow f1  = new FreeThrow(ft);
+				f1  = new FreeThrow(ft);
 				freeThrows[y] = f1;
 
 				y++;

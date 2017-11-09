@@ -2,15 +2,12 @@ package com.nbaFtAnalysis.backend;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 public class NBA_Data {
@@ -26,6 +23,7 @@ public class NBA_Data {
 		freeThrows = organiser.getFreeThrowArray();
 		playerList = new PlayerFreeThrowList(freeThrows);
 		searchSet = playerList.getSearchSet();
+				
 	}
 
 	private void printFreeThrows(){
