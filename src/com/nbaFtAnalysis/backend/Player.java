@@ -13,6 +13,7 @@ public class Player {
 	private ArrayList<FreeThrow> freeThrowsTaken; //this is an arraylist of every single freethrow taken by the instance of the player
 	private double playoffAverage;
 	private double regSeasonAverage;
+	private int numberOfPlayoffFTs;
 
 	public Player(String name, FreeThrow freeThrow){
 		if(name.length() < 40) // this is to check & handle the instance where one row has the data in the row cells
@@ -26,7 +27,7 @@ public class Player {
 		regSeasonAverage = -1.0;
 		playoffAverage = -1.0;
 		overallAverage = -1.0;
-
+		numberOfPlayoffFTs = 0;
 	}
 	public static String shortenName(String longName){ // this is only called if a player's name is greater than 40 characters, eg, if the player name cell was mixed with another
 		char [] charAr = longName.toCharArray();
@@ -101,7 +102,7 @@ public class Player {
 
 		return regSeasonAverage = (double) made/total;
 	}
-	public double calculatePlayoffAverage(){
+	private double calculatePlayoffAverage(){
 		int made=0;
 		int total=0;
 		for(FreeThrow ft : freeThrowsTaken){
@@ -113,7 +114,7 @@ public class Player {
 		}
 		if(total==0)
 			return -1.0;
-
+		numberOfPlayoffFTs = total;
 		return playoffAverage = (double) made/total;
 	}
 
@@ -272,6 +273,13 @@ public class Player {
 	public int getNumberOfTotalFTs(){
 		return numberOfFreeThrowsTaken;
 	}
+	
+	public int getNumberOfPlayoffAttempts(){
+		if(numberOfPlayoffFTs == 0)
+			calculatePlayoffAverage();
+		return numberOfPlayoffFTs;
+	}
+	
 
 }
 
