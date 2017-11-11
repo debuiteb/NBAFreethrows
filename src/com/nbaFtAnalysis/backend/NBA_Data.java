@@ -422,10 +422,10 @@ public class NBA_Data {
 				continue;
 			LinkedList tempList = new LinkedList();
 			playerName = player.getName();
+			
 			tempList.add(playerName);
 			tempList.add(attempts);
 			tempList.add(player.getPlayoffDifferential());
-			System.out.println(playerName + " " + attempts);
 			
 			arList.add(tempList);
 		}
@@ -458,6 +458,30 @@ public class NBA_Data {
 		}
 		System.out.println();
 	}
+	public LinkedList []  sortPlayoffDifferentialDescending(){ //sorts an array of linked lists of playoff fts in descending order
+		LinkedList [] list = getPlayoffDifferentialList();
+		int length = list.length;
+		for(int i=0;i<length;i++){
+			for(int j=0;j<length;j++){				
+				if( ((Double) list[i].get(2)).doubleValue() >  ((Double) list[j].get(2)).doubleValue() ){
+					LinkedList<?> tempList = list[i];
+					list[i] = list[j];
+					list[j] = tempList;
+				}
+			}
+		}
+		return list;
+	}
+	public void printPlayoffDifferentialsDescending(){
+		LinkedList [] list = sortPlayoffDifferentialDescending();
+		System.out.println(" player \tattempts \tdifferential");
+		for(LinkedList l : list){
+			System.out.print(l.getFirst() + "\t");
+			System.out.print(l.get(1) + " \t");
+			System.out.println(l.getLast() + " \t");
+		}
+		System.out.println();
+	}
 	
 		
 	public static void main(String[] args) {
@@ -473,7 +497,7 @@ public class NBA_Data {
 		data.printClutchFTsByDifferentialsAscending();
 		
 		
-		data.printPlayoffDifferentialsAscending();
+		data.printPlayoffDifferentialsDescending();
 		
 		data.runApplication();
 
