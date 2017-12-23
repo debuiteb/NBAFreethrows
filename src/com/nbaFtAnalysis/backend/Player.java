@@ -243,7 +243,7 @@ public class Player {
 
 
 	public double clutchDifferential(){
-		if(overallAverage == -1.0)
+		if(overallAverage == -1.0) // ie no ft attempts recorded yet
 			calculateOverallAverage();
 		return clutchTimeAverage().getPercentage() - overallAverage;
 	}
@@ -279,7 +279,6 @@ public class Player {
 			calculatePlayoffAverage();
 		return numberOfPlayoffFTs;
 	}
-	
 
 }
 

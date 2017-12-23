@@ -342,12 +342,17 @@ public class NBA_Data {
 	}
 	
 	public void printClutchTimeDifferentials(){ // prints all players clutch time differentials, unordered
+		System.out.println("---------------------------");
+		System.out.println("** CLUTCH TIME DIFFERENTIALS UNORDERED **");
 		LinkedList [] list = getClutchTimeDifferentials();
 		System.out.println(" player \t     attempts \t  differential");
+		int count = 1;
 		for(LinkedList l : list){
+			System.out.print(count+".");
 			System.out.print(l.getFirst() + "\t");
-			System.out.print(l.get(1) + "\t");
-			System.out.println(l.getLast() + "\t");
+			System.out.print(l.get(1) + " \t");
+			System.out.println(l.getLast() + " \t");
+			count++;
 		}
 		System.out.println();
 	}
@@ -372,12 +377,17 @@ public class NBA_Data {
 		return list;
 	}
 	public void printClutchFTsByDifferentialsDescending(){
+		System.out.println("---------------------------");
+		System.out.println("** CLUTCH DIFFERENTIAL DESCENDING **");
 		LinkedList [] list = sortClutchListByDifferentialDescending();
 		System.out.println(" player \tattempts \tdifferential");
+		int count = 1;
 		for(LinkedList l : list){
+			System.out.print(count+".");
 			System.out.print(l.getFirst() + "\t");
-			System.out.print(l.get(1) + "\t");
-			System.out.println(l.getLast() + "\t");
+			System.out.print(l.get(1) + " \t");
+			System.out.println(l.getLast() + " \t");
+			count++;
 		}
 		System.out.println();
 	}
@@ -401,12 +411,17 @@ public class NBA_Data {
 		return list;
 	}
 	public void printClutchFTsByDifferentialsAscending(){
+		System.out.println("---------------------------");
+		System.out.println("** CLUTCH DIFFERENTIAL ASCENDING **");
 		LinkedList [] list = sortClutchListByDifferentialAscending();
 		System.out.println(" player \tattempts \tdifferential");
+		int count = 1;
 		for(LinkedList l : list){
+			System.out.print(count+".");
 			System.out.print(l.getFirst() + "\t");
 			System.out.print(l.get(1) + " \t");
 			System.out.println(l.getLast() + " \t");
+			count++;
 		}
 		System.out.println();
 	}
@@ -449,12 +464,17 @@ public class NBA_Data {
 		return list;
 	}
 	public void printPlayoffDifferentialsAscending(){
+		System.out.println("---------------------------");
+		System.out.println("** PLAYOFF DIFFERENTIAL ASCENDING **");
 		LinkedList [] list = sortPlayoffDifferentialAscending();
 		System.out.println(" player \tattempts \tdifferential");
+		int count = 1;
 		for(LinkedList l : list){
+			System.out.print(count+".");
 			System.out.print(l.getFirst() + "\t");
 			System.out.print(l.get(1) + " \t");
 			System.out.println(l.getLast() + " \t");
+			count++;
 		}
 		System.out.println();
 	}
@@ -473,12 +493,17 @@ public class NBA_Data {
 		return list;
 	}
 	public void printPlayoffDifferentialsDescending(){
+		System.out.println("---------------------------");
+		System.out.println("** PLAYOFF DIFFERENTIAL DESCENDING **");
 		LinkedList [] list = sortPlayoffDifferentialDescending();
 		System.out.println(" player \tattempts \tdifferential");
+		int count = 1;
 		for(LinkedList l : list){
+			System.out.print(count+".");
 			System.out.print(l.getFirst() + "\t");
 			System.out.print(l.get(1) + " \t");
 			System.out.println(l.getLast() + " \t");
+			count++;
 		}
 		System.out.println();
 	}

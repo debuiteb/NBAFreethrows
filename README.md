@@ -7,7 +7,7 @@ Java application that takes in a data-set of free-throws and allows a set of met
 - [x] Search functionality
 - [x] Search for suggestions for mis-spelled player names
 - [x] Calculate player clutch-time differential 
-- [ ] Calculate player playoff differential
+- [x] Calculate player playoff differential
 - [ ] Calculate BigTimeFT differential (combination of playoff and clutch reg season fts)
 - [ ] Better organisation of packages
 - [ ] A GUI
